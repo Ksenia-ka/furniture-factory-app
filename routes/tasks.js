@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/auth');
 
 const tasks = [
   {
     id: 1,
     title: 'Сборка фасадов кухни',
-    description: 'Сборка всех фасадных элементов для проекта "Лайм"',
+    description: 'Сборка всех фасадных элементов для проекта Лайм',
     status: 'in_progress',
     assigned_to: 'Иван Петров',
     assigned_by: 'Директор',
@@ -38,29 +37,17 @@ const tasks = [
     priority: 'high',
     project: 'Гардероб Сканди',
     progress: 100
-  },
-  {
-    id: 4,
-    title: 'Проверка качества',
-    description: 'Качественная проверка всех элементов',
-    status: 'in_progress',
-    assigned_to: 'Елена Турова',
-    assigned_by: 'Директор',
-    due_date: '2026-10-17',
-    priority: 'high',
-    project: 'Кухня Лайм',
-    progress: 45
   }
 ];
 
-router.get('/', authMiddleware, (req, res) => {
+router.get('/', (req, res) => {
   res.json({
     success: true,
     data: tasks
   });
 });
 
-router.post('/', authMiddleware, (req, res) => {
+router.post('/', (req, res) => {
   const newTask = {
     id: Date.now(),
     ...req.body,
@@ -71,19 +58,13 @@ router.post('/', authMiddleware, (req, res) => {
   res.status(201).json({ success: true, data: newTask });
 });
 
-router.put('/:id/status', authMiddleware, (req, res) => {
+router.put('/:id/status', (req, res) => {
   const task = tasks.find(t => t.id === parseInt(req.params.id));
   if (!task) return res.status(404).json({ message: 'Task not found' });
   
   task.status = req.body.status;
   if (req.body.progress !== undefined) task.progress = req.body.progress;
   
-  res.json({ success: true, data: task });
-});
-
-router.get('/:id', authMiddleware, (req, res) => {
-  const task = tasks.find(t => t.id === parseInt(req.params.id));
-  if (!task) return res.status(404).json({ message: 'Task not found' });
   res.json({ success: true, data: task });
 });
 

@@ -6,17 +6,6 @@ const authMiddleware = require('../middleware/auth');
 
 const SECRET = process.env.JWT_SECRET || 'secret_key_123';
 
-// Demo users
-const demoUsers = [
-  {
-    id: 1,
-    email: 'admin@factory.com',
-    password_hash: '$2a$10$YourHashedPasswordHere',
-    full_name: 'Директор',
-    role: 'admin'
-  }
-];
-
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -25,7 +14,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Email and password required' });
     }
 
-    // Demo login
     if (email === 'admin@factory.com' && password === '123456') {
       const user = {
         id: 1,
@@ -57,8 +45,6 @@ router.post('/register', async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ message: 'Email and password required' });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = {
       id: Date.now(),

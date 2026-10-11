@@ -12,11 +12,9 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-// Test connection
 pool.getConnection().then(() => {
   console.log('✅ MySQL Database connected successfully');
 }).catch((err) => {
-  console.error('❌ MySQL Connection Error:', err.message);
   console.log('⚠️  Running in demo mode without database');
 });
 
